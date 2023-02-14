@@ -12,6 +12,9 @@
 		B75137F0299ADC4300ACD3F7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75137EF299ADC4300ACD3F7 /* MainViewController.swift */; };
 		B75137F5299ADC4400ACD3F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B75137F4299ADC4400ACD3F7 /* Assets.xcassets */; };
 		B75137F8299ADC4400ACD3F7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B75137F6299ADC4400ACD3F7 /* LaunchScreen.storyboard */; };
+		B7513805299AE2EA00ACD3F7 /* NetworkCaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7513804299AE2EA00ACD3F7 /* NetworkCaller.swift */; };
+		B7513807299AE39200ACD3F7 /* IceCream.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7513806299AE39200ACD3F7 /* IceCream.swift */; };
+		B7513809299AE44B00ACD3F7 /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7513808299AE44B00ACD3F7 /* CustomError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +25,9 @@
 		B75137F4299ADC4400ACD3F7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B75137F7299ADC4400ACD3F7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B75137F9299ADC4400ACD3F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B7513804299AE2EA00ACD3F7 /* NetworkCaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkCaller.swift; sourceTree = "<group>"; };
+		B7513806299AE39200ACD3F7 /* IceCream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IceCream.swift; sourceTree = "<group>"; };
+		B7513808299AE44B00ACD3F7 /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +88,8 @@
 		B7513801299AE06E00ACD3F7 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B7513806299AE39200ACD3F7 /* IceCream.swift */,
+				B7513808299AE44B00ACD3F7 /* CustomError.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -89,6 +97,7 @@
 		B7513802299AE07000ACD3F7 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				B7513804299AE2EA00ACD3F7 /* NetworkCaller.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -176,7 +185,10 @@
 			files = (
 				B75137F0299ADC4300ACD3F7 /* MainViewController.swift in Sources */,
 				B75137EC299ADC4300ACD3F7 /* AppDelegate.swift in Sources */,
+				B7513807299AE39200ACD3F7 /* IceCream.swift in Sources */,
 				B75137EE299ADC4300ACD3F7 /* SceneDelegate.swift in Sources */,
+				B7513805299AE2EA00ACD3F7 /* NetworkCaller.swift in Sources */,
+				B7513809299AE44B00ACD3F7 /* CustomError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

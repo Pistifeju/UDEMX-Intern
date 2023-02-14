@@ -27,6 +27,17 @@ class MainViewController: UIViewController {
         ])
     }
     
+    private func fetchIceCreams() {
+        NetworkCaller.shared.getIceCreams { result in
+            switch result {
+            case .success(let iceCreams):
+                print(iceCreams)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
     // MARK: - Selectors
 }
 
