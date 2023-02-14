@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		743C631ABC06C3021AFD159A /* libPods-UDEMX-Intern.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C6853F85F7E0C9F185841F98 /* libPods-UDEMX-Intern.a */; };
 		B75137EC299ADC4300ACD3F7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75137EB299ADC4300ACD3F7 /* AppDelegate.swift */; };
 		B75137EE299ADC4300ACD3F7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75137ED299ADC4300ACD3F7 /* SceneDelegate.swift */; };
 		B75137F0299ADC4300ACD3F7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75137EF299ADC4300ACD3F7 /* MainViewController.swift */; };
@@ -15,9 +16,16 @@
 		B7513805299AE2EA00ACD3F7 /* NetworkCaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7513804299AE2EA00ACD3F7 /* NetworkCaller.swift */; };
 		B7513807299AE39200ACD3F7 /* IceCream.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7513806299AE39200ACD3F7 /* IceCream.swift */; };
 		B7513809299AE44B00ACD3F7 /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7513808299AE44B00ACD3F7 /* CustomError.swift */; };
+		B751380B299BBC6C00ACD3F7 /* IceCreamTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B751380A299BBC6C00ACD3F7 /* IceCreamTableViewCell.swift */; };
+		B751380D299BBD7B00ACD3F7 /* IceCreamTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B751380C299BBD7B00ACD3F7 /* IceCreamTableViewHeader.swift */; };
+		B751380F299BD2FE00ACD3F7 /* ToTheBasketButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B751380E299BD2FE00ACD3F7 /* ToTheBasketButton.swift */; };
+		B7513812299BD6CE00ACD3F7 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7513811299BD6CE00ACD3F7 /* Extensions.swift */; };
+		B7661A45299C09DC00CC9529 /* BasketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661A44299C09DC00CC9529 /* BasketViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		42513CD8BBB3A05444A46CD2 /* Pods-UDEMX-Intern.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UDEMX-Intern.release.xcconfig"; path = "Target Support Files/Pods-UDEMX-Intern/Pods-UDEMX-Intern.release.xcconfig"; sourceTree = "<group>"; };
+		4ACB20698CA356E59B719BFE /* Pods-UDEMX-Intern.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UDEMX-Intern.debug.xcconfig"; path = "Target Support Files/Pods-UDEMX-Intern/Pods-UDEMX-Intern.debug.xcconfig"; sourceTree = "<group>"; };
 		B75137E8299ADC4300ACD3F7 /* UDEMX-Intern.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "UDEMX-Intern.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B75137EB299ADC4300ACD3F7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B75137ED299ADC4300ACD3F7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -28,6 +36,12 @@
 		B7513804299AE2EA00ACD3F7 /* NetworkCaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkCaller.swift; sourceTree = "<group>"; };
 		B7513806299AE39200ACD3F7 /* IceCream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IceCream.swift; sourceTree = "<group>"; };
 		B7513808299AE44B00ACD3F7 /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
+		B751380A299BBC6C00ACD3F7 /* IceCreamTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IceCreamTableViewCell.swift; sourceTree = "<group>"; };
+		B751380C299BBD7B00ACD3F7 /* IceCreamTableViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IceCreamTableViewHeader.swift; sourceTree = "<group>"; };
+		B751380E299BD2FE00ACD3F7 /* ToTheBasketButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToTheBasketButton.swift; sourceTree = "<group>"; };
+		B7513811299BD6CE00ACD3F7 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		B7661A44299C09DC00CC9529 /* BasketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketViewController.swift; sourceTree = "<group>"; };
+		C6853F85F7E0C9F185841F98 /* libPods-UDEMX-Intern.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UDEMX-Intern.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,17 +49,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				743C631ABC06C3021AFD159A /* libPods-UDEMX-Intern.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5929603D265F8B177AFBD6BD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C6853F85F7E0C9F185841F98 /* libPods-UDEMX-Intern.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B75137DF299ADC4200ACD3F7 = {
 			isa = PBXGroup;
 			children = (
 				B75137EA299ADC4300ACD3F7 /* UDEMX-Intern */,
 				B75137E9299ADC4300ACD3F7 /* Products */,
+				C7542DBDFE1465C2919D058A /* Pods */,
+				5929603D265F8B177AFBD6BD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,6 +85,7 @@
 		B75137EA299ADC4300ACD3F7 /* UDEMX-Intern */ = {
 			isa = PBXGroup;
 			children = (
+				B7513810299BD6C600ACD3F7 /* Utils */,
 				B75137F9299ADC4400ACD3F7 /* Info.plist */,
 				B7513803299AE1BE00ACD3F7 /* Application */,
 				B7513802299AE07000ACD3F7 /* API */,
@@ -74,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				B75137EF299ADC4300ACD3F7 /* MainViewController.swift */,
+				B7661A44299C09DC00CC9529 /* BasketViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -81,6 +108,9 @@
 		B7513800299AE06B00ACD3F7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B751380A299BBC6C00ACD3F7 /* IceCreamTableViewCell.swift */,
+				B751380C299BBD7B00ACD3F7 /* IceCreamTableViewHeader.swift */,
+				B751380E299BD2FE00ACD3F7 /* ToTheBasketButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -113,6 +143,23 @@
 			path = Application;
 			sourceTree = "<group>";
 		};
+		B7513810299BD6C600ACD3F7 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				B7513811299BD6CE00ACD3F7 /* Extensions.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		C7542DBDFE1465C2919D058A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4ACB20698CA356E59B719BFE /* Pods-UDEMX-Intern.debug.xcconfig */,
+				42513CD8BBB3A05444A46CD2 /* Pods-UDEMX-Intern.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -120,6 +167,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B75137FC299ADC4400ACD3F7 /* Build configuration list for PBXNativeTarget "UDEMX-Intern" */;
 			buildPhases = (
+				154B1E57EA10BF5A54FA1527 /* [CP] Check Pods Manifest.lock */,
 				B75137E4299ADC4300ACD3F7 /* Sources */,
 				B75137E5299ADC4300ACD3F7 /* Frameworks */,
 				B75137E6299ADC4300ACD3F7 /* Resources */,
@@ -178,6 +226,31 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		154B1E57EA10BF5A54FA1527 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-UDEMX-Intern-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		B75137E4299ADC4300ACD3F7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -187,8 +260,13 @@
 				B75137EC299ADC4300ACD3F7 /* AppDelegate.swift in Sources */,
 				B7513807299AE39200ACD3F7 /* IceCream.swift in Sources */,
 				B75137EE299ADC4300ACD3F7 /* SceneDelegate.swift in Sources */,
+				B751380B299BBC6C00ACD3F7 /* IceCreamTableViewCell.swift in Sources */,
+				B7513812299BD6CE00ACD3F7 /* Extensions.swift in Sources */,
+				B751380D299BBD7B00ACD3F7 /* IceCreamTableViewHeader.swift in Sources */,
+				B7661A45299C09DC00CC9529 /* BasketViewController.swift in Sources */,
 				B7513805299AE2EA00ACD3F7 /* NetworkCaller.swift in Sources */,
 				B7513809299AE44B00ACD3F7 /* CustomError.swift in Sources */,
+				B751380F299BD2FE00ACD3F7 /* ToTheBasketButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,6 +400,7 @@
 		};
 		B75137FD299ADC4400ACD3F7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4ACB20698CA356E59B719BFE /* Pods-UDEMX-Intern.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -349,6 +428,7 @@
 		};
 		B75137FE299ADC4400ACD3F7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 42513CD8BBB3A05444A46CD2 /* Pods-UDEMX-Intern.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

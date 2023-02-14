@@ -12,15 +12,22 @@ struct IceCream: Codable {
     let name: String
     let status: Status
     let imageUrl: URL?
-}
-
-struct IceCreamResponse: Decodable {
-    let basePrice: Int
-    let iceCreams: [IceCream]
+    
+    init() {
+        self.id = 0
+        self.name = ""
+        self.status = .Available
+        self.imageUrl = nil
+    }
 }
 
 enum Status: String, Codable {
     case Available = "available"
     case Melted = "melted"
     case Unavailable = "unavailable"
+}
+
+struct IceCreamResponse: Decodable {
+    let basePrice: Float
+    let iceCreams: [IceCream]
 }

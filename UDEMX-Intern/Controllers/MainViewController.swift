@@ -11,27 +11,57 @@ class MainViewController: UIViewController {
     
     // MARK: - Properties
     
+    private var basket: [IceCream] = []
+    private var iceCreams: IceCreamResponse?
+    private let header = IceCreamTableViewHeader()
+    
+    private let iceCreamsTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = .red
+        tableView.clipsToBounds = true
+        tableView.bounces = false
+        tableView.register(IceCreamTableViewCell.self, forCellReuseIdentifier: IceCreamTableViewCell.identifier)
+        return tableView
+    }()
+    
     // MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupUI()
+        
+        header.delegate = self
+        iceCreamsTableView.delegate = self
+        iceCreamsTableView.dataSource = self
+        
+        configureUI()
+        fetchIceCreams()
     }
     
     // MARK: - Helpers
-    private func setupUI() {
-        self.view.backgroundColor = .systemBlue
+    
+    private func configureUI() {
+        view.backgroundColor = .red
+        
+        view.addSubview(iceCreamsTableView)
         
         NSLayoutConstraint.activate([
-            
+            iceCreamsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            iceCreamsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            iceCreamsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            iceCreamsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
     
     private func fetchIceCreams() {
-        NetworkCaller.shared.getIceCreams { result in
+        NetworkCaller.shared.getIceCreams { [weak self] result in
+            guard let strongSelf = self else { return }
             switch result {
             case .success(let iceCreams):
-                print(iceCreams)
+                strongSelf.iceCreams = iceCreams
+                DispatchQueue.main.async {
+                    strongSelf.iceCreamsTableView.reloadData()
+                }
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -41,3 +71,54 @@ class MainViewController: UIViewController {
     // MARK: - Selectors
 }
 
+// MARK: - UITableViewDelegate
+
+extension MainViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return header
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        header.intrinsicContentSize.height
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return view.frame.height / 3
+    }
+}
+
+// MARK: - UITableViewDataSource
+
+extension MainViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return iceCreams?.iceCreams.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: IceCreamTableViewCell.identifier, for: indexPath) as! IceCreamTableViewCell
+        cell.backgroundColor = .clear
+        cell.selectionStyle = .none
+        cell.delegate = self
+        // TODO: - Fix force unwrap
+        cell.configureCell(with: self.iceCreams!.iceCreams[indexPath.row], basePrice: self.iceCreams!.basePrice)
+        return cell
+    }
+}
+
+// MARK: - IceCreamTableViewCellDelegate
+
+extension MainViewController: IceCreamTableViewCellDelegate {
+    func didTapAddToBasketButton(with iceCream: IceCream) {
+        basket.append(iceCream)
+    }
+}
+
+// MARK: - IceCreamTableViewHeaderDelegate
+
+extension MainViewController: IceCreamTableViewHeaderDelegate {
+    func didTapBasketButton() {
+        let vc = BasketViewController(with: basket)
+        present(vc, animated: true)
+    }
+}

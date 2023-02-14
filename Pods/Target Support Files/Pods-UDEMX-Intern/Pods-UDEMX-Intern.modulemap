@@ -1,0 +1,6 @@
+module Pods_UDEMX_Intern {
+  umbrella header "Pods-UDEMX-Intern-umbrella.h"
+
+  export *
+  module * { export * }
+}
