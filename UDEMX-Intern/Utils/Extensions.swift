@@ -33,3 +33,14 @@ extension UIButton {
         }
     }
 }
+
+extension Float {
+    func createFormattedBasePriceString() -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.generatesDecimalNumbers = false
+        formatter.currencyCode = "EUR"
+        formatter.maximumFractionDigits = 0
+        return formatter.string(from: NSNumber(value: self)) ?? "Error"
+    }
+}

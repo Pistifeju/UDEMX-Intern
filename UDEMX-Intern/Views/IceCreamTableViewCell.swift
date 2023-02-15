@@ -34,23 +34,9 @@ class IceCreamTableViewCell: UITableViewCell {
         return iv
     }()
     
-    private let flavorLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor(red: 249/255, green: 216/255, blue: 73/255, alpha: 1.0)
-        label.text = "ERROR"
-        label.font = UIFont.preferredFont(forTextStyle: .title1).bold()
-        return label
-    }()
-    
-    private lazy var basePriceLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .white
-        label.text = createFormattedBasePriceString(from: 999)
-        label.font = UIFont.preferredFont(forTextStyle: .title3).bold()
-        return label
-    }()
+    private var flavorLabel = FlavorLabel()
+    private var basePriceLabel = BasePriceLabel()
+    private let toTheBasketButton = CustomRedButton(with: "KOSÁRBA")
     
     private lazy var labelsStackView: UIStackView = {
         let stackview = UIStackView(arrangedSubviews: [flavorLabel, basePriceLabel])
@@ -59,8 +45,6 @@ class IceCreamTableViewCell: UITableViewCell {
         stackview.alignment = .leading
         return stackview
     }()
-    
-    let toTheBasketButton = ToTheBasketButton()
     
     // MARK: - Lifecycle
     
@@ -98,15 +82,6 @@ class IceCreamTableViewCell: UITableViewCell {
         ])
     }
     
-    private func createFormattedBasePriceString(from basePrice: Float) -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.generatesDecimalNumbers = false
-        formatter.currencyCode = "EUR"
-        formatter.maximumFractionDigits = 0
-        return formatter.string(from: NSNumber(value: basePrice)) ?? "Error"
-    }
-    
     func configureCell(with iceCream: IceCream, basePrice: Float) {
         self.iceCream = iceCream
         flavorLabel.text = iceCream.name == "Vanília" ? iceCream.name.uppercased() : iceCream.name
@@ -122,11 +97,11 @@ class IceCreamTableViewCell: UITableViewCell {
         case .Unavailable, .Melted:
             toTheBasketButton.isEnabled = false
             toTheBasketButton.setTitleColor(UIColor.gray, for: .normal)
-            basePriceLabel.text = iceCream.name == "Csokoládé" ? "Nem is volt :[" : "Kifogyott"
+            basePriceLabel.text = iceCream.status == .Unavailable ? "nem is volt" : "kifogyott"
         case .Available:
             toTheBasketButton.isEnabled = true
             toTheBasketButton.setTitleColor(UIColor.red, for: .normal)
-            basePriceLabel.text = createFormattedBasePriceString(from: basePrice)
+            basePriceLabel.text = basePrice.createFormattedBasePriceString()
         }
     }
     

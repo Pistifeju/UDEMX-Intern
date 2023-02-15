@@ -1,5 +1,5 @@
 //
-//  ToTheBasketButton.swift
+//  CustomRedButton.swift
 //  UDEMX-Intern
 //
 //  Created by István Juhász on 2023. 02. 14..
@@ -9,13 +9,12 @@ import Foundation
 
 import UIKit
 
-class ToTheBasketButton: UIButton {
+class CustomRedButton: UIButton {
         
     // MARK: - Lifecycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
+    init(with title: String) {
+        super.init(frame: .zero)
         var configuration = UIButton.Configuration.tinted()
         configuration.baseBackgroundColor = .white
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 15, bottom: 8, trailing: 15)
@@ -23,8 +22,9 @@ class ToTheBasketButton: UIButton {
         self.configuration = configuration
         
         translatesAutoresizingMaskIntoConstraints = false
-        setTitle("KOSÁRBA", for: .normal)
+        setTitle(title, for: .normal)
         setTitleColor(.red, for: .normal)
+        setTitleColor(.red, for: .highlighted)
         titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline).bold()
         backgroundColor = .white
         layer.cornerRadius = 8
@@ -33,7 +33,6 @@ class ToTheBasketButton: UIButton {
         layer.shadowRadius = 5
         layer.masksToBounds = false
         layer.shadowOffset = CGSize(width: 0, height: 0)
-        
     }
     
     required init?(coder: NSCoder) {

@@ -11,8 +11,13 @@ class MainViewController: UIViewController {
     
     // MARK: - Properties
     
-    private var basket: [IceCream] = []
+    private var containerViewForExtrasView = UIView()
+    private let extrasSlideUpView = ExtrasSlideUpView()
+    private weak var heightAnchorForExtrasSlideUpView: NSLayoutConstraint!
+    
+    internal var basket: [IceCream] = []
     private var iceCreams: IceCreamResponse?
+    private var extras: [Extra]?
     private let header = IceCreamTableViewHeader()
     
     private let iceCreamsTableView: UITableView = {
@@ -34,8 +39,12 @@ class MainViewController: UIViewController {
         iceCreamsTableView.delegate = self
         iceCreamsTableView.dataSource = self
         
+        heightAnchorForExtrasSlideUpView = extrasSlideUpView.heightAnchor.constraint(equalToConstant: 0)
+        containerViewForExtrasView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapContainerView)))
+        
         configureUI()
         fetchIceCreams()
+        fetchExtras()
     }
     
     // MARK: - Helpers
@@ -44,13 +53,26 @@ class MainViewController: UIViewController {
         view.backgroundColor = .red
         
         view.addSubview(iceCreamsTableView)
+        containerViewForExtrasView.alpha = 0
+        containerViewForExtrasView.backgroundColor = .black.withAlphaComponent(0.9)
+        containerViewForExtrasView.frame = self.view.frame
+        view.addSubview(containerViewForExtrasView)
+        view.addSubview(extrasSlideUpView)
+        
+        heightAnchorForExtrasSlideUpView = extrasSlideUpView.heightAnchor.constraint(equalToConstant: 0)
+        heightAnchorForExtrasSlideUpView.isActive = true
         
         NSLayoutConstraint.activate([
             iceCreamsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             iceCreamsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             iceCreamsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            iceCreamsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            iceCreamsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            extrasSlideUpView.leadingAnchor.constraint(equalTo: containerViewForExtrasView.leadingAnchor),
+            extrasSlideUpView.trailingAnchor.constraint(equalTo: containerViewForExtrasView.trailingAnchor),
+            extrasSlideUpView.bottomAnchor.constraint(equalTo: containerViewForExtrasView.bottomAnchor),
         ])
+        
+        view.layoutIfNeeded()
     }
     
     private func fetchIceCreams() {
@@ -63,12 +85,43 @@ class MainViewController: UIViewController {
                     strongSelf.iceCreamsTableView.reloadData()
                 }
             case .failure(let error):
+                // TODO: - Show Error Alert
                 print(error.localizedDescription)
             }
         }
     }
     
+    private func fetchExtras() {
+        NetworkCaller.shared.getExtras { [weak self] result in
+            guard let strongSelf = self else { return }
+            switch result {
+            case .success(let extras):
+                strongSelf.extras = extras
+            case .failure(let error):
+                // TODO: - Show Error Alert
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func animateExtrasSlideUpView(animateIn: Bool) {
+        heightAnchorForExtrasSlideUpView.constant = animateIn ? extrasSlideUpView.intrinsicContentSize.height : 0
+        
+        UIView.animate(withDuration: 0.5,
+                         delay: 0, usingSpringWithDamping: 1.0,
+                         initialSpringVelocity: 1.0,
+                         options: .curveEaseInOut, animations: {
+            self.containerViewForExtrasView.alpha = animateIn ? 0.8 : 0
+            self.extrasSlideUpView.alpha = animateIn ? 1 : 0
+            self.view.layoutIfNeeded()
+          }, completion: nil)
+    }
+        
     // MARK: - Selectors
+    
+    @objc private func didTapContainerView() {
+        animateExtrasSlideUpView(animateIn: false)
+    }
 }
 
 // MARK: - UITableViewDelegate
@@ -110,6 +163,7 @@ extension MainViewController: UITableViewDataSource {
 
 extension MainViewController: IceCreamTableViewCellDelegate {
     func didTapAddToBasketButton(with iceCream: IceCream) {
+        animateExtrasSlideUpView(animateIn: true)
         basket.append(iceCream)
     }
 }
@@ -118,7 +172,17 @@ extension MainViewController: IceCreamTableViewCellDelegate {
 
 extension MainViewController: IceCreamTableViewHeaderDelegate {
     func didTapBasketButton() {
-        let vc = BasketViewController(with: basket)
+        let vc = BasketViewController()
+        vc.dataSource = self
         present(vc, animated: true)
+    }
+}
+
+// MARK: - BasketViewControllerDataSource
+
+extension MainViewController: BasketViewControllerDataSource {
+    var basePrice: Float {
+        guard let iceCreams = iceCreams else { return 0 }
+        return iceCreams.basePrice
     }
 }

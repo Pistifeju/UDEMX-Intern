@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct IceCream: Codable {
+struct IceCream: Codable, Hashable {
     let id: Int
     let name: String
     let status: Status
