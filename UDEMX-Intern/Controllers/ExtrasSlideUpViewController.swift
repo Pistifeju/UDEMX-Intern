@@ -106,16 +106,10 @@ class ExtrasSlideUpViewController: UIViewController {
         view.addSubview(blurEffectView)
     }
     
-    private func createExtrasMap() {
-        
-    }
-    
     // MARK: - Selectors
     
     @objc private func didTapAddToBasketButton(sender: UIButton) {
         sender.simpleSelectingAnimation()
-        print("-------")
-        print(addedExtras)
     }
 }
 

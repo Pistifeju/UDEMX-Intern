@@ -33,8 +33,6 @@ struct Item: Codable {
 
 extension Item: Equatable {
     static func == (lhs: Item, rhs: Item) -> Bool {
-        // Implement the equality check for the Item type
-        // For example, if Item has a property called "id", you can compare ids
         return lhs.id == rhs.id
     }
 }

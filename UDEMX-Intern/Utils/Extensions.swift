@@ -40,7 +40,14 @@ extension Float {
         formatter.numberStyle = .currency
         formatter.generatesDecimalNumbers = false
         formatter.currencyCode = "EUR"
-        formatter.maximumFractionDigits = 0
+        
+        let numberString = String(self)
+        if numberString.hasSuffix(".00") || numberString.hasSuffix(".0") {
+            formatter.maximumFractionDigits = 0
+        } else {
+            formatter.maximumFractionDigits = 2
+        }
+        
         return formatter.string(from: NSNumber(value: self)) ?? "Error"
     }
 }

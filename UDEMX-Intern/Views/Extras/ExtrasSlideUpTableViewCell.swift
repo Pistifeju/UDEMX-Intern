@@ -15,6 +15,7 @@ class ExtrasSlideUpTableViewCell: UITableViewCell {
     static let identifier = "ExtrasSlideUpTableViewCell"
     
     private let itemLabel = ExtraTitleLabel()
+    private let priceLabel = BasePriceLabel()
     
     private let selectionButton: UIButton = {
         let button = UIButton()
@@ -54,19 +55,25 @@ class ExtrasSlideUpTableViewCell: UITableViewCell {
     public func configureCell(with item: Item) {
         self.item = item
         itemLabel.text = item.name
+        priceLabel.text = "+ \((Float(item.price) / Float(10)).createFormattedBasePriceString())"
     }
     
     private func configureUI() {
         backgroundColor = .clear
         
+        priceLabel.font = UIFont.preferredFont(forTextStyle: .callout).bold()
+        
         addSubview(selectionButton)
         addSubview(itemLabel)
+        addSubview(priceLabel)
         
         NSLayoutConstraint.activate([
             selectionButton.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 2),
             selectionButton.centerYAnchor.constraint(equalTo: centerYAnchor),
             itemLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             itemLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: selectionButton.trailingAnchor, multiplier: 2),
+            priceLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            trailingAnchor.constraint(equalToSystemSpacingAfter: priceLabel.trailingAnchor, multiplier: 2),
         ])
     }
     
