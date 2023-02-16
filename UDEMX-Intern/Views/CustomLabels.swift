@@ -35,3 +35,16 @@ class FlavorLabel: UILabel {
     }
 }
 
+class ExtraTitleLabel: UILabel {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        translatesAutoresizingMaskIntoConstraints = false
+        textColor = .white
+        text = "Error"
+        font = UIFont.preferredFont(forTextStyle: .title3).bold()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}

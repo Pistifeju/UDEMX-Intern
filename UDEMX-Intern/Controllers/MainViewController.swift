@@ -12,12 +12,12 @@ class MainViewController: UIViewController {
     // MARK: - Properties
     
     private var containerViewForExtrasView = UIView()
-    private let extrasSlideUpView = ExtrasSlideUpView()
     private weak var heightAnchorForExtrasSlideUpView: NSLayoutConstraint!
     
     internal var basket: [IceCream] = []
+    internal var extras: [Extra] = []
+    
     private var iceCreams: IceCreamResponse?
-    private var extras: [Extra]?
     private let header = IceCreamTableViewHeader()
     
     private let iceCreamsTableView: UITableView = {
@@ -38,10 +38,7 @@ class MainViewController: UIViewController {
         header.delegate = self
         iceCreamsTableView.delegate = self
         iceCreamsTableView.dataSource = self
-        
-        heightAnchorForExtrasSlideUpView = extrasSlideUpView.heightAnchor.constraint(equalToConstant: 0)
-        containerViewForExtrasView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapContainerView)))
-        
+                
         configureUI()
         fetchIceCreams()
         fetchExtras()
@@ -53,23 +50,12 @@ class MainViewController: UIViewController {
         view.backgroundColor = .red
         
         view.addSubview(iceCreamsTableView)
-        containerViewForExtrasView.alpha = 0
-        containerViewForExtrasView.backgroundColor = .black.withAlphaComponent(0.9)
-        containerViewForExtrasView.frame = self.view.frame
-        view.addSubview(containerViewForExtrasView)
-        view.addSubview(extrasSlideUpView)
-        
-        heightAnchorForExtrasSlideUpView = extrasSlideUpView.heightAnchor.constraint(equalToConstant: 0)
-        heightAnchorForExtrasSlideUpView.isActive = true
         
         NSLayoutConstraint.activate([
             iceCreamsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             iceCreamsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             iceCreamsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             iceCreamsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            extrasSlideUpView.leadingAnchor.constraint(equalTo: containerViewForExtrasView.leadingAnchor),
-            extrasSlideUpView.trailingAnchor.constraint(equalTo: containerViewForExtrasView.trailingAnchor),
-            extrasSlideUpView.bottomAnchor.constraint(equalTo: containerViewForExtrasView.bottomAnchor),
         ])
         
         view.layoutIfNeeded()
@@ -103,25 +89,8 @@ class MainViewController: UIViewController {
             }
         }
     }
-    
-    private func animateExtrasSlideUpView(animateIn: Bool) {
-        heightAnchorForExtrasSlideUpView.constant = animateIn ? extrasSlideUpView.intrinsicContentSize.height : 0
-        
-        UIView.animate(withDuration: 0.5,
-                         delay: 0, usingSpringWithDamping: 1.0,
-                         initialSpringVelocity: 1.0,
-                         options: .curveEaseInOut, animations: {
-            self.containerViewForExtrasView.alpha = animateIn ? 0.8 : 0
-            self.extrasSlideUpView.alpha = animateIn ? 1 : 0
-            self.view.layoutIfNeeded()
-          }, completion: nil)
-    }
         
     // MARK: - Selectors
-    
-    @objc private func didTapContainerView() {
-        animateExtrasSlideUpView(animateIn: false)
-    }
 }
 
 // MARK: - UITableViewDelegate
@@ -163,8 +132,10 @@ extension MainViewController: UITableViewDataSource {
 
 extension MainViewController: IceCreamTableViewCellDelegate {
     func didTapAddToBasketButton(with iceCream: IceCream) {
-        animateExtrasSlideUpView(animateIn: true)
-        basket.append(iceCream)
+        let vc = ExtrasSlideUpViewController()
+        vc.dataSource = self
+        vc.modalPresentationStyle = .pageSheet
+        present(vc, animated: true)
     }
 }
 
@@ -186,3 +157,8 @@ extension MainViewController: BasketViewControllerDataSource {
         return iceCreams.basePrice
     }
 }
+
+extension MainViewController: ExtrasSlideUpViewControllerDataSource {
+
+}
+
