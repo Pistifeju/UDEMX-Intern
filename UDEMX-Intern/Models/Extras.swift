@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Extra: Codable {
+struct Extra: Codable, Hashable {
     let required: Bool?
     let type: ExtraType
     let items: [Item]
@@ -19,7 +19,7 @@ struct Extra: Codable {
     }
 }
 
-struct Item: Codable {
+struct Item: Codable, Hashable {
     let price: Int
     let name: String
     let id: Int

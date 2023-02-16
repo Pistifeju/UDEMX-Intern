@@ -12,16 +12,22 @@ struct IceCream: Codable, Hashable {
     let name: String
     let status: Status
     let imageUrl: URL?
+    var extras: [Item]?
     
     init() {
         self.id = 0
         self.name = ""
         self.status = .Available
         self.imageUrl = nil
+        self.extras = []
+    }
+    
+    static func == (lhs: IceCream, rhs: IceCream) -> Bool {
+        return lhs.id == rhs.id
     }
 }
 
-enum Status: String, Codable {
+enum Status: String, Codable, Hashable {
     case Available = "available"
     case Melted = "melted"
     case Unavailable = "unavailable"

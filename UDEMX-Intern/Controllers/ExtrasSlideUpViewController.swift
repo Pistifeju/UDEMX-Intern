@@ -12,11 +12,18 @@ protocol ExtrasSlideUpViewControllerDataSource: AnyObject {
     var extras: [Extra] { get }
 }
 
+protocol ExtrasSlideUpViewControllerDelegate: AnyObject {
+    func didTapAddToBasketButton(iceCreamWithExtra iceCream: IceCream)
+}
+
 class ExtrasSlideUpViewController: UIViewController {
     
     // MARK: - Properties
     
     weak var dataSource: ExtrasSlideUpViewControllerDataSource?
+    weak var delegate: ExtrasSlideUpViewControllerDelegate?
+    
+    private var selectedIceCream: IceCream
     
     private var addedExtras: [ExtraType: [Item]] = [:]
     
@@ -45,8 +52,9 @@ class ExtrasSlideUpViewController: UIViewController {
     
     // MARK: - Lifecycle
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    init(selectedIceCream iceCream: IceCream) {
+        self.selectedIceCream = iceCream
+        super.init(nibName: nil, bundle: nil)
     }
     
     override func viewDidLoad() {
@@ -96,20 +104,41 @@ class ExtrasSlideUpViewController: UIViewController {
         ])
     }
     
-    private func createBlurEffect() {
-        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.alpha = 0.95
-        blurEffectView.frame = view.bounds
+    private func createItemsArrayForIceCream() -> [Item] {
+        var items = [Item]()
+        for (_, value) in addedExtras.enumerated() {
+            for item in value.value {
+                items.append(item)
+            }
+        }
         
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        view.addSubview(blurEffectView)
+        return items
+    }
+    
+    private func checkIfUserSelectedCone() -> Bool {
+        guard let cone = addedExtras[ExtraType.Cones] else {
+            return false
+        }
+        return !cone.isEmpty
     }
     
     // MARK: - Selectors
     
     @objc private func didTapAddToBasketButton(sender: UIButton) {
         sender.simpleSelectingAnimation()
+        guard checkIfUserSelectedCone() else {
+            let alertController = UIAlertController(title: "Hiányzó tölcsér", message: "Kérlek válassz egy tölcsért", preferredStyle: .alert)
+
+            let dismissAction = UIAlertAction(title: "Bezárás", style: .cancel, handler: nil)
+            alertController.addAction(dismissAction)
+
+            present(alertController, animated: true, completion: nil)
+            return
+        }
+    
+        selectedIceCream.extras = createItemsArrayForIceCream()
+        delegate?.didTapAddToBasketButton(iceCreamWithExtra: selectedIceCream)
+        dismiss(animated: true)
     }
 }
 

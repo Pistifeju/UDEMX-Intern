@@ -30,9 +30,11 @@ class BasketViewController: UIViewController {
     private let iceCreamsTableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.backgroundColor = .red
+        tableView.backgroundColor = .clear
         tableView.clipsToBounds = true
         tableView.bounces = false
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 44
         tableView.register(IceCreamInBasketTableViewCell.self, forCellReuseIdentifier: IceCreamInBasketTableViewCell.identifier)
         return tableView
     }()
@@ -62,7 +64,9 @@ class BasketViewController: UIViewController {
     
     // MARK: - Helpers
     private func configureUI() {
-        view.backgroundColor = .red
+        view.backgroundColor = .clear
+        
+        createBlurEffect()
         
         view.addSubview(titleLabel)
         view.addSubview(sendOrderButton)
@@ -95,25 +99,12 @@ class BasketViewController: UIViewController {
 // MARK: - UITableViewDelegate
 
 extension BasketViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let height = titleLabel.frame.height + sendOrderButton.frame.height + 16 // 16 is for the titleLabel's topAnchor multiplier 2
-        return height
-    }
-    
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .delete
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        guard let dataSource = dataSource else { return }
-        if editingStyle == .delete {
-            tableView.beginUpdates()
-            
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            dataSource.basket.remove(at: indexPath.row)
-            
-            tableView.endUpdates()
-        }
+        return UITableView.automaticDimension
     }
 }
 

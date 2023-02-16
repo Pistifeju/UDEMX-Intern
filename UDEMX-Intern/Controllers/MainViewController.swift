@@ -132,8 +132,9 @@ extension MainViewController: UITableViewDataSource {
 
 extension MainViewController: IceCreamTableViewCellDelegate {
     func didTapAddToBasketButton(with iceCream: IceCream) {
-        let vc = ExtrasSlideUpViewController()
+        let vc = ExtrasSlideUpViewController(selectedIceCream: iceCream)
         vc.dataSource = self
+        vc.delegate = self
         vc.modalPresentationStyle = .pageSheet
         present(vc, animated: true)
     }
@@ -158,7 +159,16 @@ extension MainViewController: BasketViewControllerDataSource {
     }
 }
 
+// MARK: - ExtrasSlideUpViewControllerDataSource
+
 extension MainViewController: ExtrasSlideUpViewControllerDataSource {
 
 }
 
+// MARK: - ExtrasSlideUpViewControllerDelegate
+
+extension MainViewController: ExtrasSlideUpViewControllerDelegate {
+    func didTapAddToBasketButton(iceCreamWithExtra iceCream: IceCream) {
+        basket.append(iceCream)
+    }
+}
