@@ -118,12 +118,17 @@ extension MainViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let iceCreamsResponse = iceCreams else {
+            return UITableViewCell.init()
+        }
+        let iceCream = iceCreamsResponse.iceCreams[indexPath.row]
+        let basePrice = iceCreamsResponse.basePrice
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: IceCreamTableViewCell.identifier, for: indexPath) as! IceCreamTableViewCell
         cell.backgroundColor = .clear
         cell.selectionStyle = .none
         cell.delegate = self
-        // TODO: - Fix force unwrap
-        cell.configureCell(with: self.iceCreams!.iceCreams[indexPath.row], basePrice: self.iceCreams!.basePrice)
+        cell.configureCell(with: iceCream, basePrice: basePrice)
         return cell
     }
 }
@@ -132,11 +137,7 @@ extension MainViewController: UITableViewDataSource {
 
 extension MainViewController: IceCreamTableViewCellDelegate {
     func didTapAddToBasketButton(with iceCream: IceCream) {
-        let vc = ExtrasSlideUpViewController(selectedIceCream: iceCream)
-        vc.dataSource = self
-        vc.delegate = self
-        vc.modalPresentationStyle = .pageSheet
-        present(vc, animated: true)
+        basket.append(iceCream)
     }
 }
 
@@ -156,19 +157,5 @@ extension MainViewController: BasketViewControllerDataSource {
     var basePrice: Float {
         guard let iceCreams = iceCreams else { return 0 }
         return iceCreams.basePrice
-    }
-}
-
-// MARK: - ExtrasSlideUpViewControllerDataSource
-
-extension MainViewController: ExtrasSlideUpViewControllerDataSource {
-
-}
-
-// MARK: - ExtrasSlideUpViewControllerDelegate
-
-extension MainViewController: ExtrasSlideUpViewControllerDelegate {
-    func didTapAddToBasketButton(iceCreamWithExtra iceCream: IceCream) {
-        basket.append(iceCream)
     }
 }
