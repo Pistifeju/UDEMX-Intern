@@ -138,7 +138,6 @@ extension MainViewController: UITableViewDataSource {
 
 extension MainViewController: IceCreamTableViewCellDelegate {
     func didTapAddToBasketButton(with iceCream: IceCream) {
-        print(addedExtras)
         if !basket.contains(where: { $0.key == iceCream }) {
             basket[iceCream] = 1
         } else {

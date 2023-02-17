@@ -212,8 +212,20 @@ class BasketViewController: UIViewController {
     
     @objc private func didTapSendOrderButton(_ sender: UIButton) {
         sender.simpleSelectingAnimation()
-        print("------------")
-        print(dataSource?.addedExtras)
+        guard let dataSource = dataSource else {
+            return
+        }
+        
+        let extras = dataSource.addedExtras
+        
+        if let cones = extras[.Cones], cones.isEmpty {
+            AlertManager.showOnlyDismissAlert(on: self, with: "Hiányzó tölcsér", and: "Kérlek válassz egy tölcsért")
+            return
+        }
+
+        if !extras.keys.contains(.Cones) {
+            AlertManager.showOnlyDismissAlert(on: self, with: "Hiányzó tölcsér", and: "Kérlek válassz egy tölcsért")
+        }
     }
 }
 
@@ -256,14 +268,14 @@ extension BasketViewController: UITableViewDelegate {
             let key = dataSource.extras[indexPath.section].type
 
             if indexPath.section == 0 {
+                dataSource.addedExtras[key] = [item]
+                
                 UIView.performWithoutAnimation {
                     let sectionIndex = IndexSet(integer: 0)
                     tableView.reloadSections(sectionIndex, with: .none)
                     tableView.reloadRows(at: [indexPath], with: .none)
                     tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
                 }
-
-                dataSource.addedExtras[key] = [item]
             } else {
                 dataSource.addedExtras[key] = (dataSource.addedExtras[key] ?? []) + [item]
             }

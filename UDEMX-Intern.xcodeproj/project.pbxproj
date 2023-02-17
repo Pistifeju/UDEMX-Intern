@@ -25,6 +25,7 @@
 		B7661A49299C4D6F00CC9529 /* CustomLabels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661A48299C4D6F00CC9529 /* CustomLabels.swift */; };
 		B7661A4D299D36CF00CC9529 /* Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661A4C299D36CF00CC9529 /* Extras.swift */; };
 		B7661A51299D87D900CC9529 /* ExtrasSlideUpTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661A50299D87D900CC9529 /* ExtrasSlideUpTableViewCell.swift */; };
+		B7661A5729A026F700CC9529 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661A5629A026F700CC9529 /* AlertManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 		B7661A48299C4D6F00CC9529 /* CustomLabels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabels.swift; sourceTree = "<group>"; };
 		B7661A4C299D36CF00CC9529 /* Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extras.swift; sourceTree = "<group>"; };
 		B7661A50299D87D900CC9529 /* ExtrasSlideUpTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtrasSlideUpTableViewCell.swift; sourceTree = "<group>"; };
+		B7661A5629A026F700CC9529 /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 		C6853F85F7E0C9F185841F98 /* libPods-UDEMX-Intern.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UDEMX-Intern.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -158,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				B7513811299BD6CE00ACD3F7 /* Extensions.swift */,
+				B7661A5629A026F700CC9529 /* AlertManager.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7661A5729A026F700CC9529 /* AlertManager.swift in Sources */,
 				B75137F0299ADC4300ACD3F7 /* MainViewController.swift in Sources */,
 				B7661A4D299D36CF00CC9529 /* Extras.swift in Sources */,
 				B75137EC299ADC4300ACD3F7 /* AppDelegate.swift in Sources */,
