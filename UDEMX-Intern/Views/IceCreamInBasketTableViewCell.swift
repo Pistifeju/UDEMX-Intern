@@ -42,7 +42,10 @@ class IceCreamInBasketTableViewCell: UITableViewCell {
     
     private func configureUI() {
         backgroundColor = .clear
-                
+        
+        priceLabel.textColor = .white.withAlphaComponent(0.8)
+        priceLabel.font = UIFont.preferredFont(forTextStyle: .callout).bold()
+        
         selectionStyle = .none
         
         contentView.addSubview(flavorLabel)
@@ -59,7 +62,7 @@ class IceCreamInBasketTableViewCell: UITableViewCell {
     func configureCell(with iceCream: IceCream, basePrice: Float) {
         self.iceCream = iceCream
         flavorLabel.text = iceCream.name == "Vanília" ? iceCream.name.uppercased() : iceCream.name
-        priceLabel.text = basePrice.createFormattedBasePriceString()
+        priceLabel.text = "+ \(basePrice.createFormattedBasePriceString())"
     }
     
     // MARK: - Selectors

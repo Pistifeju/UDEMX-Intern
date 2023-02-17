@@ -60,8 +60,8 @@ class ExtrasSlideUpTableViewCell: UITableViewCell {
     
     private func configureUI() {
         backgroundColor = .clear
-        priceLabel.textColor = .white.withAlphaComponent(0.8)
         
+        priceLabel.textColor = .white.withAlphaComponent(0.8)
         priceLabel.font = UIFont.preferredFont(forTextStyle: .callout).bold()
         
         addSubview(selectionButton)

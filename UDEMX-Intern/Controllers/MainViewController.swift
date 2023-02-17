@@ -146,8 +146,9 @@ extension MainViewController: IceCreamTableViewCellDelegate {
 extension MainViewController: IceCreamTableViewHeaderDelegate {
     func didTapBasketButton() {
         let vc = BasketViewController()
+        let nav = UINavigationController(rootViewController: vc)
         vc.dataSource = self
-        present(vc, animated: true)
+        present(nav, animated: true)
     }
 }
 

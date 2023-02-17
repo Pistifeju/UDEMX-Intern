@@ -60,11 +60,11 @@ class BasketViewController: UIViewController {
         return tableView
     }()
     
-    private let titleLabel: UILabel = {
+    private let basketIsEmptyLabel: UILabel = {
         let label = UILabel()
-        label.text = "Kosár tartalma"
+        label.text = "Üres a kosarad"
         label.textColor = .white
-        label.font = UIFont.preferredFont(forTextStyle: .title3).bold()
+        label.font = UIFont.preferredFont(forTextStyle: .title2).bold()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -73,9 +73,28 @@ class BasketViewController: UIViewController {
         let label = UILabel()
         label.text = "Extrák a fagyidhoz"
         label.textColor = .white
-        label.font = UIFont.preferredFont(forTextStyle: .title3).bold()
+        label.font = UIFont.preferredFont(forTextStyle: .title2).bold()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
+    }()
+    
+    private let scrollView: UIScrollView = {
+        let scv = UIScrollView()
+        scv.backgroundColor = .clear
+        scv.showsVerticalScrollIndicator = false
+        scv.showsHorizontalScrollIndicator = false
+        scv.translatesAutoresizingMaskIntoConstraints = false
+        return scv
+    }()
+    
+    let scrollViewContainer: UIStackView = {
+        let view = UIStackView()
+        view.backgroundColor = .clear
+        view.axis = .vertical
+        view.spacing = 10
+        view.alignment = .center
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     let sendOrderButton = CustomRedButton(with: "Rendelés elküldése")
@@ -107,35 +126,47 @@ class BasketViewController: UIViewController {
     private func configureUI() {
         view.backgroundColor = .clear
         
+        title = "Kosár tartalma"
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .title1).bold()]
+        
         createBlurEffect()
         
-        view.addSubview(titleLabel)
-        view.addSubview(sendOrderButton)
-        view.addSubview(iceCreamsTableView)
-        view.addSubview(extrasTitleLabel)
-        view.addSubview(extrasTableView)
-        view.insertSubview(iceCreamsTableView, belowSubview: sendOrderButton)
-        view.insertSubview(extrasTableView, belowSubview: sendOrderButton)
+        guard let dataSource = dataSource, !dataSource.basket.isEmpty else {
+            view.addSubview(basketIsEmptyLabel)
+            basketIsEmptyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+            basketIsEmptyLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+            return
+        }
+        
+        view.addSubview(scrollView)
+        scrollView.addSubview(scrollViewContainer)
+        
+        scrollViewContainer.addArrangedSubview(iceCreamsTableView)
+        scrollViewContainer.addArrangedSubview(extrasTitleLabel)
+        scrollViewContainer.addArrangedSubview(extrasTableView)
+        scrollViewContainer.addArrangedSubview(sendOrderButton)
         
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalToSystemSpacingBelow: view.topAnchor, multiplier: 2),
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: sendOrderButton.bottomAnchor, multiplier: 2),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: sendOrderButton.trailingAnchor, multiplier: 2),
+            scrollViewContainer.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            scrollViewContainer.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            scrollViewContainer.topAnchor.constraint(equalToSystemSpacingBelow: scrollView.topAnchor, multiplier: 2),
+            scrollViewContainer.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            scrollViewContainer.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            
+            extrasTitleLabel.centerXAnchor.constraint(equalTo: scrollViewContainer.centerXAnchor),
             sendOrderButton.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
-            sendOrderButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.06),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: sendOrderButton.trailingAnchor, multiplier: 2),
             
-            iceCreamsTableView.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 2),
             iceCreamsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             iceCreamsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
-            extrasTitleLabel.topAnchor.constraint(equalToSystemSpacingBelow: iceCreamsTableView.bottomAnchor, multiplier: 2),
-            extrasTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-
-            extrasTableView.topAnchor.constraint(equalToSystemSpacingBelow: extrasTitleLabel.bottomAnchor, multiplier: 2),
             extrasTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             extrasTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+
         ])
     }
     
@@ -158,12 +189,17 @@ extension BasketViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50
+        let text = UILabel()
+        text.font = UIFont.preferredFont(forTextStyle: .title3).bold()
+        text.text = "PLACEHOLDER"
+        text.sizeToFit()
+        return text.frame.height + 16
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
         header.textLabel?.textColor = .white
+        header.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         header.textLabel?.font = UIFont.preferredFont(forTextStyle: .title3).bold()
     }
     
