@@ -17,7 +17,7 @@ class MainViewController: UIViewController {
     internal var basket: [IceCream: Int] = [:]
     internal var extras: [Extra] = []
     internal var addedExtras: [ExtraType: [Item]] = [:]
-
+    
     private var iceCreams: IceCreamResponse?
     private let header = IceCreamTableViewHeader()
     
@@ -36,16 +36,38 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive(_:)), name: UIApplication.willResignActiveNotification, object: nil)
+        
+        basket = loadDataFromUserDefaults(forKey: "basket", defaultValue: [IceCream: Int]())
+        addedExtras = loadDataFromUserDefaults(forKey: "addedExtras", defaultValue: [ExtraType: [Item]]())
+        
         header.delegate = self
         iceCreamsTableView.delegate = self
         iceCreamsTableView.dataSource = self
-                
+        
         configureUI()
         fetchIceCreams()
         fetchExtras()
     }
     
     // MARK: - Helpers
+    
+    func loadDataFromUserDefaults<T: Codable>(forKey key: String, defaultValue: T) -> T {
+        let defaults = UserDefaults.standard
+        guard let encodedData = defaults.data(forKey: key),
+              let decodedValue = try? JSONDecoder().decode(T.self, from: encodedData) else {
+            return defaultValue
+        }
+        return decodedValue
+    }
+    
+    func saveDataToUserDefaults<T: Codable>(forKey key: String, array: T) {
+        let defaults = UserDefaults.standard
+        let encoder = JSONEncoder()
+        if let encodedData = try? encoder.encode(array) {
+            defaults.set(encodedData, forKey: key)
+        }
+    }
     
     private func configureUI() {
         view.backgroundColor = .red
@@ -90,8 +112,13 @@ class MainViewController: UIViewController {
             }
         }
     }
-        
+    
     // MARK: - Selectors
+    
+    @objc private func applicationWillResignActive(_ notification: Notification) {
+        saveDataToUserDefaults(forKey: "basket", array: basket)
+        saveDataToUserDefaults(forKey: "addedExtras", array: addedExtras)
+    }
 }
 
 // MARK: - UITableViewDelegate
