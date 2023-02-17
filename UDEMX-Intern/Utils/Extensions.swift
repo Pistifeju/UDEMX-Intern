@@ -56,7 +56,6 @@ extension UIViewController {
     func createBlurEffect() {
         let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.alpha = 0.95
         blurEffectView.frame = view.bounds
         
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]

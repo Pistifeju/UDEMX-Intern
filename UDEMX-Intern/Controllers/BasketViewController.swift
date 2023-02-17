@@ -40,7 +40,7 @@ class BasketViewController: UIViewController {
         tableView.clipsToBounds = true
         tableView.bounces = false
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 44
+        tableView.estimatedRowHeight = 75
         tableView.register(IceCreamInBasketTableViewCell.self, forCellReuseIdentifier: IceCreamInBasketTableViewCell.identifier)
         return tableView
     }()
@@ -98,6 +98,7 @@ class BasketViewController: UIViewController {
     }()
     
     let sendOrderButton = CustomRedButton(with: "Rendelés elküldése")
+    let hiddenButtonForHeight = CustomRedButton(with: "Rendelés elküldése")
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -123,30 +124,33 @@ class BasketViewController: UIViewController {
     }
     
     // MARK: - Helpers
+    
     private func configureUI() {
         view.backgroundColor = .clear
+        
+        hiddenButtonForHeight.layer.opacity = 0
         
         title = "Kosár tartalma"
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .title1).bold()]
         
         createBlurEffect()
         
-        guard let dataSource = dataSource, !dataSource.basket.isEmpty else {
-            view.addSubview(basketIsEmptyLabel)
-            basketIsEmptyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-            basketIsEmptyLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-            return
-        }
+        showStackViewIfBasketIsNotEmpty()
         
+        view.addSubview(basketIsEmptyLabel)
         view.addSubview(scrollView)
         scrollView.addSubview(scrollViewContainer)
         
         scrollViewContainer.addArrangedSubview(iceCreamsTableView)
         scrollViewContainer.addArrangedSubview(extrasTitleLabel)
         scrollViewContainer.addArrangedSubview(extrasTableView)
-        scrollViewContainer.addArrangedSubview(sendOrderButton)
+        scrollViewContainer.addArrangedSubview(hiddenButtonForHeight)
+        scrollView.addSubview(sendOrderButton)
         
         NSLayoutConstraint.activate([
+            basketIsEmptyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            basketIsEmptyLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -158,16 +162,26 @@ class BasketViewController: UIViewController {
             scrollViewContainer.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             scrollViewContainer.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
-            extrasTitleLabel.centerXAnchor.constraint(equalTo: scrollViewContainer.centerXAnchor),
-            sendOrderButton.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: sendOrderButton.trailingAnchor, multiplier: 2),
-            
             iceCreamsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             iceCreamsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             extrasTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             extrasTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-
+            
+            sendOrderButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.06),
+            sendOrderButton.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: sendOrderButton.trailingAnchor, multiplier: 2),
+            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: sendOrderButton.bottomAnchor, multiplier: 2),
         ])
+    }
+    
+    private func showStackViewIfBasketIsNotEmpty() {
+        guard let dataSource = dataSource, !dataSource.basket.isEmpty else {
+            basketIsEmptyLabel.isHidden = false
+            scrollView.isHidden = true
+            return
+        }
+        basketIsEmptyLabel.isHidden = true
+        scrollView.isHidden = false
     }
     
     // MARK: - Selectors
@@ -185,6 +199,11 @@ extension BasketViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if tableView == iceCreamsTableView {
+            let cell = tableView.dequeueReusableCell(withIdentifier: IceCreamInBasketTableViewCell.identifier) as! IceCreamInBasketTableViewCell
+            return cell.intrinsicContentSize.height
+        }
+        
         return UITableView.automaticDimension
     }
     
@@ -281,6 +300,7 @@ extension BasketViewController: UITableViewDataSource {
         if tableView == iceCreamsTableView {
             let cell = tableView.dequeueReusableCell(withIdentifier: IceCreamInBasketTableViewCell.identifier, for: indexPath) as! IceCreamInBasketTableViewCell
             cell.configureCell(with: dataSource.basket[indexPath.row], basePrice: dataSource.basePrice)
+            cell.delegate = self
             
             return cell
         } else {
@@ -291,5 +311,16 @@ extension BasketViewController: UITableViewDataSource {
             
             return cell
         }
+    }
+}
+
+// MARK: -
+
+extension BasketViewController: IceCreamInBasketTableViewCellDelegate {
+    func userDidSetValueToZero(on iceCream: IceCream) {
+        guard let dataSource = dataSource else { return }
+        dataSource.basket.removeAll(where: { $0 == iceCream })
+        iceCreamsTableView.reloadData()
+        showStackViewIfBasketIsNotEmpty()
     }
 }
