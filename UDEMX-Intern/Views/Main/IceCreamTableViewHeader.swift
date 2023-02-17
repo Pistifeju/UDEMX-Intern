@@ -17,21 +17,22 @@ class IceCreamTableViewHeader: UIView {
     // MARK: - Properties
     
     weak var delegate: IceCreamTableViewHeaderDelegate?
-    
+        
     private let logoImageView: UIImageView = {
-        let iv = UIImageView(image: UIImage(named: "logo"))
+        let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.contentMode = .scaleAspectFit
         iv.clipsToBounds = true
         return iv
     }()
     
-    private let cartButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.tintColor = .white
-        button.setImage(UIImage(named: "cart-outline"), for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+    private let cartImageView: UIImageView = {
+        let iv = UIImageView()
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        iv.contentMode = .scaleAspectFit
+        iv.clipsToBounds = true
+        iv.isUserInteractionEnabled = true
+        return iv
     }()
     
     // MARK: - Lifecycle
@@ -39,9 +40,14 @@ class IceCreamTableViewHeader: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        cartButton.addTarget(self, action: #selector(didTapCartButton(_:)), for: .touchUpInside)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(cartImageTapped))
+        cartImageView.addGestureRecognizer(tap)
         
         configureUI()
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: UIScreen.main.bounds.width, height: logoImageView.frame.size.height + 16)
     }
     
     required init?(coder: NSCoder) {
@@ -53,27 +59,33 @@ class IceCreamTableViewHeader: UIView {
     private func configureUI() {
         backgroundColor = .red
             
+        let logoImage = UIImage(named: "logo")!
+        logoImageView.image = logoImage
+        let cartImage = UIImage(named: "cart-outline")!
+        cartImageView.image = cartImage
+        
         addSubview(logoImageView)
-        addSubview(cartButton)
+        addSubview(cartImageView)
         
         NSLayoutConstraint.activate([
-            logoImageView.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 1),
+            logoImageView.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 2),
             logoImageView.topAnchor.constraint(equalTo: topAnchor),
-            bottomAnchor.constraint(equalTo: logoImageView.bottomAnchor),
-            logoImageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1/3),
-            logoImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor, multiplier: 1/2),
+            logoImageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.5),
+            logoImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor, multiplier: logoImage.size.height / logoImage.size.width),
             
-            trailingAnchor.constraint(equalToSystemSpacingAfter: cartButton.trailingAnchor, multiplier: 2),
-            cartButton.centerYAnchor.constraint(equalTo: centerYAnchor),
-            cartButton.heightAnchor.constraint(equalTo: logoImageView.heightAnchor, multiplier: 0.7),
-            cartButton.widthAnchor.constraint(equalTo: cartButton.heightAnchor, multiplier: 0.7),
+            trailingAnchor.constraint(equalToSystemSpacingAfter: cartImageView.trailingAnchor, multiplier: 2),
+            cartImageView.centerYAnchor.constraint(equalTo: logoImageView.centerYAnchor),
+            cartImageView.heightAnchor.constraint(equalTo: logoImageView.heightAnchor, multiplier: 0.5),
+            cartImageView.widthAnchor.constraint(equalTo: logoImageView.heightAnchor, multiplier: 0.5),
         ])
+        logoImageView.sizeToFit()
+        cartImageView.sizeToFit()
     }
     
     // MARK: - Selectors
     
-    @objc private func didTapCartButton(_ sender: UIButton) {
-        sender.simpleSelectingAnimation()
+    @objc func cartImageTapped() {
+        cartImageView.simpleSelectingAnimation()
         delegate?.didTapBasketButton()
     }
 }

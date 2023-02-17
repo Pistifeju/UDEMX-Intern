@@ -22,7 +22,7 @@ extension UIFont {
     }
 }
 
-extension UIButton {
+extension UIView {
     func simpleSelectingAnimation() {
         UIView.animate(withDuration: 0.1) {
             self.layer.opacity = 0.8

@@ -52,7 +52,7 @@ class MainViewController: UIViewController {
     
     // MARK: - Helpers
     
-    func loadDataFromUserDefaults<T: Codable>(forKey key: String, defaultValue: T) -> T {
+    private func loadDataFromUserDefaults<T: Codable>(forKey key: String, defaultValue: T) -> T {
         let defaults = UserDefaults.standard
         guard let encodedData = defaults.data(forKey: key),
               let decodedValue = try? JSONDecoder().decode(T.self, from: encodedData) else {
@@ -61,7 +61,7 @@ class MainViewController: UIViewController {
         return decodedValue
     }
     
-    func saveDataToUserDefaults<T: Codable>(forKey key: String, array: T) {
+    private func saveDataToUserDefaults<T: Codable>(forKey key: String, array: T) {
         let defaults = UserDefaults.standard
         let encoder = JSONEncoder()
         if let encodedData = try? encoder.encode(array) {
@@ -129,7 +129,7 @@ extension MainViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        header.intrinsicContentSize.height
+        return header.intrinsicContentSize.height
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

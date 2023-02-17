@@ -74,6 +74,7 @@ class IceCreamTableViewCell: UITableViewCell {
             bottomAnchor.constraint(equalToSystemSpacingBelow: labelsStackView.bottomAnchor, multiplier: 2),
             toTheBasketButton.centerYAnchor.constraint(equalTo: labelsStackView.centerYAnchor),
             trailingAnchor.constraint(equalToSystemSpacingAfter: toTheBasketButton.trailingAnchor, multiplier: 2),
+            toTheBasketButton.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.1),
             
             flavorImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
             flavorImageView.trailingAnchor.constraint(equalTo: trailingAnchor),

@@ -17,7 +17,7 @@ class ExtrasSlideUpTableViewCell: UITableViewCell {
     private let itemLabel = ExtraTitleLabel()
     private let priceLabel = BasePriceLabel()
     
-    public let selectionButton: UIButton = {
+    private let selectionButton: UIButton = {
         let button = UIButton()
         
         let config = UIImage.SymbolConfiguration(pointSize: 25, weight: .light, scale: .default)
