@@ -57,11 +57,11 @@ class IceCreamTableViewHeader: UIView {
         addSubview(cartButton)
         
         NSLayoutConstraint.activate([
-            logoImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor, multiplier: 1/2),
             logoImageView.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 1),
             logoImageView.topAnchor.constraint(equalTo: topAnchor),
             bottomAnchor.constraint(equalTo: logoImageView.bottomAnchor),
             logoImageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1/3),
+            logoImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor, multiplier: 1/2),
             
             trailingAnchor.constraint(equalToSystemSpacingAfter: cartButton.trailingAnchor, multiplier: 2),
             cartButton.centerYAnchor.constraint(equalTo: centerYAnchor),

@@ -12,28 +12,16 @@ struct IceCream: Codable, Hashable {
     let name: String
     let status: Status
     let imageUrl: URL?
-    var extras: [Item]?
     
     init() {
         self.id = 0
         self.name = ""
         self.status = .Available
         self.imageUrl = nil
-        self.extras = []
     }
     
     static func == (lhs: IceCream, rhs: IceCream) -> Bool {
         return lhs.id == rhs.id
-    }
-    
-    func calculateFinalPriceWithoutBasePrice() -> Float {
-        var price = 0
-        guard let extras = extras else { return 0 }
-        for extra in extras {
-            price += extra.price
-        }
-        
-        return Float(price) / 10.0
     }
 }
 

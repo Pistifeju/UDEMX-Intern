@@ -14,9 +14,10 @@ class MainViewController: UIViewController {
     private var containerViewForExtrasView = UIView()
     private weak var heightAnchorForExtrasSlideUpView: NSLayoutConstraint!
     
-    internal var basket: [IceCream] = []
+    internal var basket: [IceCream: Int] = [:]
     internal var extras: [Extra] = []
-    
+    internal var addedExtras: [ExtraType: [Item]] = [:]
+
     private var iceCreams: IceCreamResponse?
     private let header = IceCreamTableViewHeader()
     
@@ -137,8 +138,11 @@ extension MainViewController: UITableViewDataSource {
 
 extension MainViewController: IceCreamTableViewCellDelegate {
     func didTapAddToBasketButton(with iceCream: IceCream) {
-        if !basket.contains(iceCream) {
-            basket.append(iceCream)
+        print(addedExtras)
+        if !basket.contains(where: { $0.key == iceCream }) {
+            basket[iceCream] = 1
+        } else {
+            basket[iceCream]! += 1
         }
     }
 }

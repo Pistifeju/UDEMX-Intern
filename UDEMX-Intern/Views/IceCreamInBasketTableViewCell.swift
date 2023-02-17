@@ -8,7 +8,7 @@
 import UIKit
 
 protocol IceCreamInBasketTableViewCellDelegate: AnyObject {
-    func userDidSetValueToZero(on iceCream: IceCream)
+    func userDidChangeStepperValue(on iceCream: IceCream, toValue: Int)
 }
 
 class IceCreamInBasketTableViewCell: UITableViewCell {
@@ -19,12 +19,6 @@ class IceCreamInBasketTableViewCell: UITableViewCell {
     private var iceCream = IceCream()
     
     weak var delegate: IceCreamInBasketTableViewCellDelegate?
-    
-    private var price: Float = 1.0 {
-        didSet {
-            priceLabel.text = "+ \(price.createFormattedBasePriceString())"
-        }
-    }
     
     private var flavorLabel = FlavorLabel()
     private var priceLabel = BasePriceLabel()
@@ -107,9 +101,11 @@ class IceCreamInBasketTableViewCell: UITableViewCell {
         ])
     }
     
-    func configureCell(with iceCream: IceCream, basePrice: Float) {
+    func configureCell(with iceCream: IceCream, iceCreamCount: Int, basePrice: Float) {
         self.iceCream = iceCream
-        self.price = basePrice
+        countStepper.value = Double(iceCreamCount)
+        stepperLabel.text = "\(Int(countStepper.value))"
+        priceLabel.text = "+ \(Float(countStepper.value).createFormattedBasePriceString())"
         flavorLabel.text = iceCream.name == "Vanília" ? iceCream.name.uppercased() : iceCream.name
     }
     
@@ -118,10 +114,8 @@ class IceCreamInBasketTableViewCell: UITableViewCell {
     @objc private func stepperValueDidChange(_ sender: UIStepper) {
         let value = sender.value
         
-        price = Float(value)
         stepperLabel.text = "\(Int(value))"
-        if value == 0 {
-            delegate?.userDidSetValueToZero(on: iceCream)
-        }
+        priceLabel.text = "+ \(Float(countStepper.value).createFormattedBasePriceString())"
+        delegate?.userDidChangeStepperValue(on: iceCream, toValue: Int(value))
     }
 }

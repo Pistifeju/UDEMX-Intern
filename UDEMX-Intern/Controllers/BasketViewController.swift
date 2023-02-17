@@ -8,9 +8,10 @@
 import UIKit
 
 protocol BasketViewControllerDataSource: AnyObject {
-    var basket: [IceCream] { get set }
+    var basket: [IceCream: Int] { get set }
     var extras: [Extra] { get }
     var basePrice: Float { get }
+    var addedExtras: [ExtraType: [Item]] { get set }
 }
 
 final class ContentSizedTableView: UITableView {
@@ -31,7 +32,6 @@ class BasketViewController: UIViewController {
     // MARK: - Properties
     
     weak var dataSource: BasketViewControllerDataSource?
-    private var addedExtras: [ExtraType: [Item]] = [:]
     
     private let iceCreamsTableView: ContentSizedTableView = {
         let tableView = ContentSizedTableView()
@@ -120,6 +120,8 @@ class BasketViewController: UIViewController {
         extrasTableView.dataSource = self
         extrasTableView.delegate = self
                 
+        setSendOrderButtonLabel()
+        
         configureUI()
     }
     
@@ -184,10 +186,34 @@ class BasketViewController: UIViewController {
         scrollView.isHidden = false
     }
     
+    private func calculateCurrentPrice() -> Float {
+        guard let dataSource = dataSource else { return 0 }
+        var price: Float = 0
+        
+        for iceCream in dataSource.basket {
+            price += Float(iceCream.value) * dataSource.basePrice
+        }
+        
+        for extra in dataSource.addedExtras {
+            for item in extra.value {
+                price += Float(item.price) / 10
+            }
+        }
+        
+        return price
+    }
+    
+    private func setSendOrderButtonLabel() {
+        let price = calculateCurrentPrice()
+        sendOrderButton.setTitle("Rendelés leadás \(price.createFormattedBasePriceString())", for: .normal)
+    }
+    
     // MARK: - Selectors
     
     @objc private func didTapSendOrderButton(_ sender: UIButton) {
         sender.simpleSelectingAnimation()
+        print("------------")
+        print(dataSource?.addedExtras)
     }
 }
 
@@ -237,10 +263,12 @@ extension BasketViewController: UITableViewDelegate {
                     tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
                 }
 
-                addedExtras[key] = [item]
+                dataSource.addedExtras[key] = [item]
             } else {
-                addedExtras[key] = (addedExtras[key] ?? []) + [item]
+                dataSource.addedExtras[key] = (dataSource.addedExtras[key] ?? []) + [item]
             }
+            
+            setSendOrderButtonLabel()
         }
     }
     
@@ -251,10 +279,12 @@ extension BasketViewController: UITableViewDelegate {
             let item = dataSource.extras[indexPath.section].items[indexPath.row]
             let key = dataSource.extras[indexPath.section].type
 
-            if var items = addedExtras[key], let index = items.firstIndex(of: item) {
+            if var items = dataSource.addedExtras[key], let index = items.firstIndex(of: item) {
                 items.remove(at: index)
-                addedExtras[key] = items
+                dataSource.addedExtras[key] = items
             }
+            
+            setSendOrderButtonLabel()
         }
     }
 }
@@ -299,14 +329,33 @@ extension BasketViewController: UITableViewDataSource {
         
         if tableView == iceCreamsTableView {
             let cell = tableView.dequeueReusableCell(withIdentifier: IceCreamInBasketTableViewCell.identifier, for: indexPath) as! IceCreamInBasketTableViewCell
-            cell.configureCell(with: dataSource.basket[indexPath.row], basePrice: dataSource.basePrice)
+            
+            var iceCreamsInBasket: [IceCream] = []
+            
+            for basket in dataSource.basket {
+                iceCreamsInBasket.append(basket.key)
+            }
+            
+            let iceCream = iceCreamsInBasket[indexPath.row]
+            
+            cell.configureCell(with: iceCream, iceCreamCount: dataSource.basket[iceCream]!, basePrice: dataSource.basePrice)
             cell.delegate = self
             
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: ExtrasSlideUpTableViewCell.identifier, for: indexPath) as! ExtrasSlideUpTableViewCell
-            let item = dataSource.extras[indexPath.section].items[indexPath.row]
-            cell.configureCell(with: item)
+            
+            let cellItem = dataSource.extras[indexPath.section].items[indexPath.row]
+            
+            for items in dataSource.addedExtras.values {
+                for item in items {
+                    if cellItem == item {
+                        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                    }
+                }
+            }
+            
+            cell.configureCell(with: cellItem)
             cell.selectionStyle = .none
             
             return cell
@@ -314,12 +363,19 @@ extension BasketViewController: UITableViewDataSource {
     }
 }
 
-// MARK: -
+// MARK: - IceCreamInBasketTableViewCellDelegate
 
 extension BasketViewController: IceCreamInBasketTableViewCellDelegate {
-    func userDidSetValueToZero(on iceCream: IceCream) {
+    func userDidChangeStepperValue(on iceCream: IceCream, toValue: Int) {
         guard let dataSource = dataSource else { return }
-        dataSource.basket.removeAll(where: { $0 == iceCream })
+        
+        if toValue == 0 {
+            dataSource.basket[iceCream] = nil
+        } else {
+            dataSource.basket[iceCream] = toValue
+        }
+        
+        setSendOrderButtonLabel()
         iceCreamsTableView.reloadData()
         showStackViewIfBasketIsNotEmpty()
     }
