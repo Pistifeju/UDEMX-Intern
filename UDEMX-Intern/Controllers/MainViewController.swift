@@ -11,6 +11,8 @@ class MainViewController: UIViewController {
     
     // MARK: - Properties
     
+    private let loadingSpinner = UIActivityIndicatorView(style: .whiteLarge)
+    
     private var containerViewForExtrasView = UIView()
     private weak var heightAnchorForExtrasSlideUpView: NSLayoutConstraint!
     
@@ -82,14 +84,20 @@ class MainViewController: UIViewController {
         view.backgroundColor = .red
         
         view.addSubview(iceCreamsTableView)
+        view.addSubview(loadingSpinner)
+        loadingSpinner.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             iceCreamsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             iceCreamsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             iceCreamsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             iceCreamsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            loadingSpinner.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            loadingSpinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
         
+        loadingSpinner.startAnimating()
         view.layoutIfNeeded()
     }
     
@@ -101,10 +109,11 @@ class MainViewController: UIViewController {
                 strongSelf.iceCreams = iceCreams
                 DispatchQueue.main.async {
                     strongSelf.iceCreamsTableView.reloadData()
+                    strongSelf.loadingSpinner.isHidden = true
+                    strongSelf.loadingSpinner.stopAnimating()
                 }
             case .failure(let error):
-                // TODO: - Show Error Alert
-                print(error.localizedDescription)
+                AlertManager.showOnlyDismissAlert(on: strongSelf, with: "Error while gettin data form the server", and: error.localizedDescription)
             }
         }
     }
@@ -116,8 +125,7 @@ class MainViewController: UIViewController {
             case .success(let extras):
                 strongSelf.extras = extras
             case .failure(let error):
-                // TODO: - Show Error Alert
-                print(error.localizedDescription)
+                AlertManager.showOnlyDismissAlert(on: strongSelf, with: "Error while getting data form the server", and: error.localizedDescription)
             }
         }
     }
