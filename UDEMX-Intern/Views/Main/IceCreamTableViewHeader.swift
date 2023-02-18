@@ -44,6 +44,8 @@ class IceCreamTableViewHeader: UIView {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(cartImageTapped))
         cartImageView.addGestureRecognizer(tap)
+                
+        cartItemNumberLabelView.delegate = self
         
         configureUI()
     }
@@ -104,3 +106,8 @@ class IceCreamTableViewHeader: UIView {
     }
 }
 
+extension IceCreamTableViewHeader: CartItemNumberLabelViewDelegate {
+    func CartItemNumberViewIsHidden(isHidden: Bool) {
+        cartItemNumberLabelView.isHidden = isHidden
+    }
+}

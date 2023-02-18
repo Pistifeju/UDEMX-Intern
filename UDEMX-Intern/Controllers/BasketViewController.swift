@@ -390,5 +390,6 @@ extension BasketViewController: IceCreamInBasketTableViewCellDelegate {
         setSendOrderButtonLabel()
         iceCreamsTableView.reloadData()
         showStackViewIfBasketIsNotEmpty()
+        NotificationCenter.default.post(name: NSNotification.Name("BasketChanged"), object: nil, userInfo: ["basket": dataSource.basket])
     }
 }

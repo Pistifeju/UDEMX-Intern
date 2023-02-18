@@ -41,6 +41,8 @@ class MainViewController: UIViewController {
         basket = loadDataFromUserDefaults(forKey: "basket", defaultValue: [IceCream: Int]())
         addedExtras = loadDataFromUserDefaults(forKey: "addedExtras", defaultValue: [ExtraType: [Item]]())
         
+        NotificationCenter.default.post(name: NSNotification.Name("BasketChanged"), object: nil, userInfo: ["basket": basket])
+        
         header.delegate = self
         iceCreamsTableView.delegate = self
         iceCreamsTableView.dataSource = self
@@ -170,6 +172,8 @@ extension MainViewController: IceCreamTableViewCellDelegate {
         } else {
             basket[iceCream]! += 1
         }
+        
+        NotificationCenter.default.post(name: NSNotification.Name("BasketChanged"), object: nil, userInfo: ["basket": basket])
     }
 }
 
