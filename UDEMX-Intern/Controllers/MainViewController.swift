@@ -17,8 +17,15 @@ class MainViewController: UIViewController {
     internal var basket: [IceCream: Int] = [:]
     internal var extras: [Extra] = []
     internal var addedExtras: [ExtraType: [Item]] = [:]
+    internal var iceCreams: IceCreamResponse? {
+        didSet {
+            guard let response = iceCreams else { return }
+            header.setSegmentedControlTitles(with: response)
+        }
+    }
     
-    private var iceCreams: IceCreamResponse?
+    private var selectedStatus: Status = .Available
+    
     private let header = IceCreamTableViewHeader()
     
     private let iceCreamsTableView: UITableView = {
@@ -144,14 +151,22 @@ extension MainViewController: UITableViewDelegate {
 extension MainViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return iceCreams?.iceCreams.count ?? 0
+        guard let iceCreamsResponse = iceCreams else {
+            return 0
+        }
+        let sortedArray: [IceCream] = iceCreamsResponse.iceCreams.filter({ $0.status == selectedStatus })
+        
+        return sortedArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let iceCreamsResponse = iceCreams else {
             return UITableViewCell.init()
         }
-        let iceCream = iceCreamsResponse.iceCreams[indexPath.row]
+        
+        let sortedArray: [IceCream] = iceCreamsResponse.iceCreams.filter({ $0.status == selectedStatus })
+        
+        let iceCream = sortedArray[indexPath.row]
         let basePrice = iceCreamsResponse.basePrice
         
         let cell = tableView.dequeueReusableCell(withIdentifier: IceCreamTableViewCell.identifier, for: indexPath) as! IceCreamTableViewCell
@@ -180,6 +195,11 @@ extension MainViewController: IceCreamTableViewCellDelegate {
 // MARK: - IceCreamTableViewHeaderDelegate
 
 extension MainViewController: IceCreamTableViewHeaderDelegate {
+    func availibilitySegmentedControlDidChange(to status: Status) {
+        selectedStatus = status
+        iceCreamsTableView.reloadData()
+    }
+    
     func didTapBasketButton() {
         let vc = BasketViewController()
         let nav = UINavigationController(rootViewController: vc)
