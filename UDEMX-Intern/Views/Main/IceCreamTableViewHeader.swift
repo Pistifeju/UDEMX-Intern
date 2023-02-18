@@ -35,6 +35,8 @@ class IceCreamTableViewHeader: UIView {
         return iv
     }()
     
+    private let cartItemNumberLabelView = CartItemNumberLabelView()
+    
     // MARK: - Lifecycle
     
     override init(frame: CGRect) {
@@ -44,6 +46,12 @@ class IceCreamTableViewHeader: UIView {
         cartImageView.addGestureRecognizer(tap)
         
         configureUI()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        cartItemNumberLabelView.layer.cornerRadius = cartItemNumberLabelView.frame.size.width / 2
     }
     
     override var intrinsicContentSize: CGSize {
@@ -66,6 +74,7 @@ class IceCreamTableViewHeader: UIView {
         
         addSubview(logoImageView)
         addSubview(cartImageView)
+        cartImageView.addSubview(cartItemNumberLabelView)
         
         NSLayoutConstraint.activate([
             logoImageView.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 2),
@@ -75,9 +84,14 @@ class IceCreamTableViewHeader: UIView {
             
             trailingAnchor.constraint(equalToSystemSpacingAfter: cartImageView.trailingAnchor, multiplier: 2),
             cartImageView.centerYAnchor.constraint(equalTo: logoImageView.centerYAnchor),
-            cartImageView.heightAnchor.constraint(equalTo: logoImageView.heightAnchor, multiplier: 0.5),
-            cartImageView.widthAnchor.constraint(equalTo: logoImageView.heightAnchor, multiplier: 0.5),
+            cartImageView.heightAnchor.constraint(equalTo: logoImageView.heightAnchor, multiplier: 0.9),
+            cartImageView.widthAnchor.constraint(equalTo: logoImageView.heightAnchor, multiplier: 0.9),
+            
+            cartItemNumberLabelView.heightAnchor.constraint(equalTo: cartImageView.heightAnchor, multiplier: 0.5),
+            cartItemNumberLabelView.widthAnchor.constraint(equalTo: cartImageView.widthAnchor, multiplier: 0.5),
+            cartItemNumberLabelView.trailingAnchor.constraint(equalTo: cartImageView.trailingAnchor),
         ])
+        
         logoImageView.sizeToFit()
         cartImageView.sizeToFit()
     }

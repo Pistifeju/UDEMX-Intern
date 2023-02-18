@@ -205,7 +205,7 @@ class BasketViewController: UIViewController {
     
     private func setSendOrderButtonLabel() {
         let price = calculateCurrentPrice()
-        sendOrderButton.setTitle("Rendelés leadás \(price.createFormattedBasePriceString())", for: .normal)
+        sendOrderButton.setTitle("Rendelés leadása \(price.createFormattedBasePriceString())", for: .normal)
     }
     
     // MARK: - Selectors

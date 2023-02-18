@@ -26,6 +26,7 @@
 		B7661A4D299D36CF00CC9529 /* Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661A4C299D36CF00CC9529 /* Extras.swift */; };
 		B7661A51299D87D900CC9529 /* ExtrasSlideUpTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661A50299D87D900CC9529 /* ExtrasSlideUpTableViewCell.swift */; };
 		B7661A5729A026F700CC9529 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661A5629A026F700CC9529 /* AlertManager.swift */; };
+		B7661A5929A0FC3900CC9529 /* CartItemNumberLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661A5829A0FC3900CC9529 /* CartItemNumberLabelView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +52,7 @@
 		B7661A4C299D36CF00CC9529 /* Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extras.swift; sourceTree = "<group>"; };
 		B7661A50299D87D900CC9529 /* ExtrasSlideUpTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtrasSlideUpTableViewCell.swift; sourceTree = "<group>"; };
 		B7661A5629A026F700CC9529 /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
+		B7661A5829A0FC3900CC9529 /* CartItemNumberLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartItemNumberLabelView.swift; sourceTree = "<group>"; };
 		C6853F85F7E0C9F185841F98 /* libPods-UDEMX-Intern.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UDEMX-Intern.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -178,6 +180,7 @@
 			children = (
 				B751380A299BBC6C00ACD3F7 /* IceCreamTableViewCell.swift */,
 				B751380C299BBD7B00ACD3F7 /* IceCreamTableViewHeader.swift */,
+				B7661A5829A0FC3900CC9529 /* CartItemNumberLabelView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -301,6 +304,7 @@
 				B7513805299AE2EA00ACD3F7 /* NetworkCaller.swift in Sources */,
 				B7513809299AE44B00ACD3F7 /* CustomError.swift in Sources */,
 				B7661A49299C4D6F00CC9529 /* CustomLabels.swift in Sources */,
+				B7661A5929A0FC3900CC9529 /* CartItemNumberLabelView.swift in Sources */,
 				B751380F299BD2FE00ACD3F7 /* CustomRedButton.swift in Sources */,
 				B7661A47299C49CB00CC9529 /* IceCreamInBasketTableViewCell.swift in Sources */,
 			);
