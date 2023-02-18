@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol BasketViewControllerDelegate: AnyObject {
+    func didSendOrder()
+}
+
 protocol BasketViewControllerDataSource: AnyObject {
     var basket: [IceCream: Int] { get set }
     var extras: [Extra] { get }
@@ -32,6 +36,7 @@ class BasketViewController: UIViewController {
     // MARK: - Properties
     
     weak var dataSource: BasketViewControllerDataSource?
+    weak var delegate: BasketViewControllerDelegate?
     
     private let iceCreamsTableView: ContentSizedTableView = {
         let tableView = ContentSizedTableView()
@@ -225,6 +230,33 @@ class BasketViewController: UIViewController {
 
         if !extras.keys.contains(.Cones) {
             AlertManager.showOnlyDismissAlert(on: self, with: "Hiányzó tölcsér", and: "Kérlek válassz egy tölcsért")
+        }
+        
+        var items: [Item] = []
+        
+        for extra in extras {
+            for item in extra.value {
+                items.append(item)
+            }
+        }
+        
+        let basket = Basket(price: calculateCurrentPrice(), iceCreams: dataSource.basket, extras: items)
+        NetworkCaller.shared.postBasket(with: basket) { [weak self] error in
+            guard let strongSelf = self else { return }
+            if let error = error {
+                AlertManager.showOnlyDismissAlert(on: strongSelf, with: "Error while sending your order", and: error.localizedDescription)
+                return
+            } else {
+                AlertManager.showOnlyDismissAlertWithCompletion(on: strongSelf, with: "Success", and: "Order sent successfully!") {
+                    dataSource.addedExtras = [:]
+                    dataSource.basket = [:]
+                    strongSelf.iceCreamsTableView.reloadData()
+                    strongSelf.extrasTableView.reloadData()
+                    strongSelf.showStackViewIfBasketIsNotEmpty()
+                    NotificationCenter.default.post(name: NSNotification.Name("BasketChanged"), object: nil, userInfo: ["basket": dataSource.basket])
+                    strongSelf.dismiss(animated: true)
+                }
+            }
         }
     }
 }

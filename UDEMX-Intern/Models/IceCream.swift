@@ -31,7 +31,13 @@ enum Status: String, Codable, Hashable {
     case Unavailable = "unavailable"
 }
 
-struct IceCreamResponse: Decodable {
+struct Basket: Codable {
+    let price: Float
+    let iceCreams: [IceCream: Int]
+    let extras: [Item]
+}
+
+struct IceCreamResponse: Codable {
     let basePrice: Float
     let iceCreams: [IceCream]
 }

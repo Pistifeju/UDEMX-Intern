@@ -12,6 +12,7 @@ class NetworkCaller {
     static let shared = NetworkCaller()
     private let iceCreamsURLString = "https://raw.githubusercontent.com/udemx/hr-resources/master/icecreams.json"
     private let extrasURLString = "https://raw.githubusercontent.com/udemx/hr-resources/master/extras.json"
+    private let postURLString = "https://jsonplaceholder.typicode.com/posts"
     private init () {}
     
     func getIceCreams(completion: @escaping(Result<IceCreamResponse, Error>) -> Void) {
@@ -74,6 +75,29 @@ class NetworkCaller {
             }
         }
         
+        task.resume()
+    }
+    
+    func postBasket(with basket: Basket, completion: @escaping(Error?) -> Void) {
+        guard let url = URL(string: postURLString) else {
+            completion(CustomError.invalidURL)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let jsonData = try! JSONEncoder().encode(basket)
+        request.httpBody = jsonData
+        
+        let task = URLSession.shared.dataTask(with: request) { _, _, error in
+            if let error = error {
+                completion(error)
+            }
+            
+            completion(nil)
+        }
         task.resume()
     }
 }
