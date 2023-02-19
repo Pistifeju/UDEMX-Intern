@@ -136,7 +136,7 @@ class MainViewController: UIViewController {
         saveDataToUserDefaults(forKey: "basket", array: basket)
         saveDataToUserDefaults(forKey: "addedExtras", array: addedExtras)
     }
-}
+}
 
 // MARK: - UITableViewDelegate
 

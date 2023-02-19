@@ -12,7 +12,7 @@ class NetworkCaller {
     static let shared = NetworkCaller()
     private let iceCreamsURLString = "https://raw.githubusercontent.com/udemx/hr-resources/master/icecreams.json"
     private let extrasURLString = "https://raw.githubusercontent.com/udemx/hr-resources/master/extras.json"
-    private let postURLString = "https://jsonplaceholder.typicode.com/posts"
+    private let postURLString = "http://httpbin.org/post"
     private init () {}
     
     func getIceCreams(completion: @escaping(Result<IceCreamResponse, Error>) -> Void) {
